@@ -2,10 +2,10 @@
 
 import React, { useEffect, useState } from "react";
 
-/* === asset paths (served from /public) === */
-const LOGO_SRC = "/NetworkOfOne-website/assets/img/logo-white.jpg";
-const LOGO_TRANSPARENT = "/NetworkOfOne-website/assets/img/logo-transparent.jpeg";
-const INTRO_VIDEO = "/NetworkOfOne-website/assets/img/intro.mp4";
+/* === asset paths (served from repository root) === */
+const LOGO_SRC = "/assets/white.jpg";
+const LOGO_TRANSPARENT = "/assets/logo_transparent.jpeg";
+const INTRO_VIDEO = "/assets/gif.mp4";
 
 /**
  * Networkof.One – XRPL Grant One-Pager
@@ -19,6 +19,7 @@ export default function NetworkOfOneSite() {
   const [contactSent, setContactSent] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [imageModalOpen, setImageModalOpen] = useState(false);
 
   // NEW: intro overlay (auto-fades, respects reduced motion)
   const [showIntro, setShowIntro] = useState(true);
@@ -152,6 +153,45 @@ export default function NetworkOfOneSite() {
           -webkit-tap-highlight-color: transparent;
         }
         
+        /* Mobile menu fixes */
+        .mobile-menu {
+          z-index: 70; /* Higher than intro overlay */
+          animation: slideDown 0.2s ease-out;
+        }
+        
+        @keyframes slideDown {
+          from { opacity: 0; transform: translateY(-10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Header improvements */
+        .header-content {
+          position: relative;
+          z-index: 51; /* Higher than intro overlay */
+        }
+        
+        /* Image modal styles */
+        .image-modal {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          z-index: 80;
+          background: rgba(0, 0, 0, 0.9);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 1rem;
+        }
+        
+        .image-modal-content {
+          max-width: 95vw;
+          max-height: 95vh;
+          border-radius: 12px;
+          box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        }
+        
         /* Video optimizations for mobile */
         video {
           object-fit: cover;
@@ -239,6 +279,26 @@ export default function NetworkOfOneSite() {
           .mobile-gap-4 {
             gap: 1rem !important;
           }
+          
+          /* Mobile header fixes */
+          .mobile-header {
+            padding: 0.75rem 1rem !important;
+          }
+          
+          .mobile-logo {
+            font-size: 1.1rem !important;
+            max-width: 60% !important;
+          }
+          
+          .mobile-cta-group {
+            gap: 0.5rem !important;
+          }
+          
+          .mobile-menu-button {
+            flex-shrink: 0 !important;
+            width: 40px !important;
+            height: 40px !important;
+          }
         }
         
         /* Tablet styles */
@@ -286,13 +346,13 @@ export default function NetworkOfOneSite() {
       </div>
 
       {/* Sticky nav */}
-      <header className={`sticky top-0 z-50 border-b border-slate-200/70 bg-[rgba(255,255,255,.7)] backdrop-blur transition-shadow ${
+      <header className={`sticky top-0 z-50 border-b border-slate-200/70 bg-[rgba(255,255,255,.7)] backdrop-blur transition-shadow header-content ${
         scrolled ? "shadow-[var(--shadow-1)]" : "shadow-none"
       }`}>
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <a href="#home" className="font-semibold tracking-tight text-xl flex items-center gap-2">
-            <img src={LOGO_SRC} alt="Networkof.One" className="h-8 w-auto rounded-md" />
-            <span>Networkof.One</span>
+        <div className="mx-auto max-w-7xl mobile-header px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+          <a href="#home" className="font-semibold tracking-tight text-xl flex items-center gap-2 mobile-logo">
+            <img src={LOGO_SRC} alt="Networkof.One" className="h-8 w-auto rounded-md flex-shrink-0" />
+            <span className="truncate">Networkof.One</span>
           </a>
 
           {/* Desktop nav */}
@@ -309,17 +369,17 @@ export default function NetworkOfOneSite() {
           </nav>
 
           {/* CTA + Mobile toggle */}
-          <div className="flex items-center gap-3">
-            <a href="#join" className="hidden sm:inline-flex btn btn-primary">
+          <div className="flex items-center mobile-cta-group gap-3">
+            <a href="#join" className="hidden md:inline-flex btn btn-primary">
               <span className="spark" aria-hidden></span>
               Join the network
             </a>
             <button
               onClick={() => setMenuOpen((v) => !v)}
-              className="md:hidden inline-flex h-9 w-9 items-center justify-center rounded-lg ring-1 ring-slate-300 bg-white"
+              className="md:hidden inline-flex mobile-menu-button h-9 w-9 items-center justify-center rounded-lg ring-1 ring-slate-300 bg-white"
               aria-label="Toggle menu"
             >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="stroke-[3] stroke-slate-700">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="stroke-[2.5] stroke-slate-700">
                 <path d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
@@ -328,7 +388,7 @@ export default function NetworkOfOneSite() {
 
         {/* Mobile menu - Touch optimized */}
         {menuOpen && (
-          <nav className="md:hidden border-t border-slate-200 bg-white" data-reveal>
+          <nav className="md:hidden border-t border-slate-200 bg-white mobile-menu">
             <div className="mx-auto max-w-7xl px-4 py-3 grid gap-1 text-base">
               {[
                 ["#about", "About"],
@@ -481,10 +541,27 @@ export default function NetworkOfOneSite() {
         </div>
 
         <div className="mt-8 rounded-[var(--radius-xl)] bg-white ring-1 ring-slate-200 p-4 shadow-[var(--shadow-1)]" data-reveal>
-          {/* System diagram image placeholder */}
-          <div className="aspect-[16/9] w-full rounded-lg bg-slate-100 grid place-items-center text-slate-500">
-            System diagram placeholder - replace with image
+          {/* System diagram image */}
+          <div 
+            className="aspect-[16/9] w-full rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity group relative"
+            onClick={() => setImageModalOpen(true)}
+          >
+            <img 
+              src="/assets/systemdiagram.png" 
+              alt="Network of One System Architecture Diagram" 
+              className="w-full h-full object-contain bg-white group-hover:scale-105 transition-transform duration-300"
+            />
+            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 flex items-center justify-center">
+              <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 backdrop-blur-sm rounded-full p-3">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="stroke-slate-700 stroke-2">
+                  <path d="M15 3h6v6M10 14 21 3M21 14v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h7"/>
+                </svg>
+              </div>
+            </div>
           </div>
+          <p className="text-center text-sm text-slate-600 mt-3">
+            Click to view full system architecture diagram
+          </p>
         </div>
       </Section>
 
@@ -724,6 +801,32 @@ export default function NetworkOfOneSite() {
           </div>
         </div>
       </footer>
+      
+      {/* Image Modal */}
+      {imageModalOpen && (
+        <div 
+          className="image-modal"
+          onClick={() => setImageModalOpen(false)}
+        >
+          <div className="relative">
+            <img 
+              src="/assets/systemdiagram.png" 
+              alt="Network of One System Architecture Diagram - Full View" 
+              className="image-modal-content max-w-full max-h-full object-contain"
+              onClick={(e) => e.stopPropagation()}
+            />
+            <button
+              onClick={() => setImageModalOpen(false)}
+              className="absolute top-4 right-4 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 transition-colors"
+              aria-label="Close modal"
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="stroke-current stroke-2">
+                <path d="M18 6L6 18M6 6l12 12"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
