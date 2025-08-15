@@ -371,25 +371,12 @@ export default function NetworkOfOneSite() {
             <NavLink href="#roadmap">Roadmap</NavLink>
             <NavLink href="#market">Market</NavLink>
             <NavLink href="#demo">POC Demo</NavLink>
-            <NavLink href="#join">Join</NavLink>
             <NavLink href="#contact">Contact</NavLink>
             <NavLink href="#press">Press</NavLink>
           </nav>
 
-          {/* Header CTAs */}
+          {/* Mobile toggle only */}
           <div className="flex items-center mobile-cta-group gap-3">
-            {/* Compact mobile CTA - avoids overlap */}
-            <a
-              href="#join"
-              className="sm:hidden inline-flex btn btn-primary header-cta whitespace-nowrap"
-            >
-              Join
-            </a>
-            {/* Desktop CTA */}
-            <a href="#join" className="hidden md:inline-flex btn btn-primary">
-              <span className="spark" aria-hidden></span>
-              Join the network
-            </a>
             <button
               onClick={() => setMenuOpen((v) => !v)}
               className="md:hidden inline-flex mobile-menu-button h-9 w-9 items-center justify-center rounded-lg ring-1 ring-slate-300 bg-white"
@@ -413,7 +400,6 @@ export default function NetworkOfOneSite() {
                 ["#roadmap", "Roadmap"],
                 ["#market", "Market"],
                 ["#demo", "POC Demo"],
-                ["#join", "Join"],
                 ["#contact", "Contact"],
                 ["#press", "Press"],
               ].map(([href, label]) => (
@@ -459,7 +445,6 @@ export default function NetworkOfOneSite() {
                 Watch demo
               </a>
               <a href="#roadmap" className="btn btn-ghost w-full sm:w-auto">View roadmap</a>
-              <a href="#join" className="btn btn-outline w-full sm:w-auto">Join the network</a>
             </div>
 
             <dl className="mt-8 sm:mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6" data-reveal>
