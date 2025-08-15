@@ -130,6 +130,15 @@ export default function NetworkOfOneSite() {
         .btn-ghost:active{background:#f1f5f9}
         .btn .spark{position:absolute; inset:0; background:radial-gradient(600px circle at var(--x,50%) var(--y,50%), rgba(255,255,255,.25), transparent 40%); opacity:0; transition:opacity .25s ease; border-radius:inherit}
         .btn:hover .spark{opacity:1}
+
+        /* Compact header CTA for small screens */
+        .header-cta{
+          padding: .4rem .6rem;
+          border-radius: 10px;
+          font-size: 14px;
+          line-height: 1;
+          height: 32px;
+        }
         
         /* Mobile-optimized inputs */
         input, textarea, select {
@@ -286,9 +295,7 @@ export default function NetworkOfOneSite() {
           }
           
           /* Mobile header fixes */
-          .mobile-header {
-            padding: 0.75rem 1rem !important;
-          }
+          .mobile-header { padding: 0.5rem 0.75rem !important; }
           
           .mobile-logo {
             font-size: 1.1rem !important;
@@ -299,11 +306,7 @@ export default function NetworkOfOneSite() {
             gap: 0.5rem !important;
           }
           
-          .mobile-menu-button {
-            flex-shrink: 0 !important;
-            width: 40px !important;
-            height: 40px !important;
-          }
+          .mobile-menu-button { flex-shrink: 0 !important; width: 36px !important; height: 36px !important; }
         }
         
         /* Tablet styles */
@@ -373,8 +376,20 @@ export default function NetworkOfOneSite() {
             <NavLink href="#press">Press</NavLink>
           </nav>
 
-          {/* Mobile toggle (header CTA removed per request) */}
+          {/* Header CTAs */}
           <div className="flex items-center mobile-cta-group gap-3">
+            {/* Compact mobile CTA - avoids overlap */}
+            <a
+              href="#join"
+              className="sm:hidden inline-flex btn btn-primary header-cta whitespace-nowrap"
+            >
+              Join
+            </a>
+            {/* Desktop CTA */}
+            <a href="#join" className="hidden md:inline-flex btn btn-primary">
+              <span className="spark" aria-hidden></span>
+              Join the network
+            </a>
             <button
               onClick={() => setMenuOpen((v) => !v)}
               className="md:hidden inline-flex mobile-menu-button h-9 w-9 items-center justify-center rounded-lg ring-1 ring-slate-300 bg-white"
