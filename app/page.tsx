@@ -3,9 +3,9 @@
 import React, { useEffect, useState } from "react";
 
 /* === asset paths (served from repository root) === */
-const LOGO_SRC = "/assets/white.jpg";
-const LOGO_TRANSPARENT = "/assets/logo_transparent.jpeg";
-const INTRO_VIDEO = "/assets/gif.mp4";
+const LOGO_SRC = "/NetworkOfOne-website/assets/img/logo-white.jpg";
+const LOGO_TRANSPARENT = "/NetworkOfOne-website/assets/img/logo-transparent.jpeg";
+const INTRO_VIDEO = "/NetworkOfOne-website/assets/img/intro.mp4";
 
 /**
  * Networkof.One – XRPL Grant One-Pager
@@ -547,7 +547,7 @@ export default function NetworkOfOneSite() {
             onClick={() => setImageModalOpen(true)}
           >
             <img 
-              src="/assets/systemdiagram.png" 
+              src="/NetworkOfOne-website/assets/systemdiagram.png" 
               alt="Network of One System Architecture Diagram" 
               className="w-full h-full object-contain bg-white group-hover:scale-105 transition-transform duration-300"
             />
@@ -810,7 +810,7 @@ export default function NetworkOfOneSite() {
         >
           <div className="relative">
             <img 
-              src="/assets/systemdiagram.png" 
+              src="/NetworkOfOne-website/assets/systemdiagram.png" 
               alt="Network of One System Architecture Diagram - Full View" 
               className="image-modal-content max-w-full max-h-full object-contain"
               onClick={(e) => e.stopPropagation()}
