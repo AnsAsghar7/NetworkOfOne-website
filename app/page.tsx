@@ -373,12 +373,8 @@ export default function NetworkOfOneSite() {
             <NavLink href="#press">Press</NavLink>
           </nav>
 
-          {/* CTA + Mobile toggle */}
+          {/* Mobile toggle (header CTA removed per request) */}
           <div className="flex items-center mobile-cta-group gap-3">
-            <a href="#join" className="hidden md:inline-flex btn btn-primary">
-              <span className="spark" aria-hidden></span>
-              Join the network
-            </a>
             <button
               onClick={() => setMenuOpen((v) => !v)}
               className="md:hidden inline-flex mobile-menu-button h-9 w-9 items-center justify-center rounded-lg ring-1 ring-slate-300 bg-white"
@@ -429,16 +425,7 @@ export default function NetworkOfOneSite() {
         )}
       </header>
 
-      {/* Mobile floating CTA (does not overlap header/content) */}
-      {!menuOpen && !showIntro && (
-        <a
-          href="#join"
-          className="sm:hidden fixed left-1/2 -translate-x-1/2 bottom-[calc(env(safe-area-inset-bottom)+16px)] btn btn-primary shadow-[var(--shadow-2)] z-[55] animate-pop"
-        >
-          <span className="spark" aria-hidden></span>
-          Join the network
-        </a>
-      )}
+      {/* Mobile floating CTA removed per request */}
 
       {/* Hero - Mobile optimized */}
       <section id="home" className="bg-gradient-to-b from-white to-[var(--bg-soft)]">
