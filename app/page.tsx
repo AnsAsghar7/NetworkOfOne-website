@@ -3,9 +3,9 @@
 import React, { useEffect, useState } from "react";
 
 /* === asset paths (served from /public) === */
-const LOGO_SRC = "/assets/img/logo-white.jpg";
-const LOGO_TRANSPARENT = "/assets/img/logo-transparent.jpeg";
-const INTRO_VIDEO = "/assets/img/intro.mp4";
+const LOGO_SRC = "/NetworkOfOne-website/assets/img/logo-white.jpg";
+const LOGO_TRANSPARENT = "/NetworkOfOne-website/assets/img/logo-transparent.jpeg";
+const INTRO_VIDEO = "/NetworkOfOne-website/assets/img/intro.mp4";
 
 /**
  * Networkof.One – XRPL Grant One-Pager
