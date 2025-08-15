@@ -2,10 +2,11 @@
 
 import React, { useEffect, useState } from "react";
 
-/* === asset paths (served from repository root) === */
-const LOGO_SRC = "/NetworkOfOne-website/assets/img/logo-white.jpg";
-const LOGO_TRANSPARENT = "/NetworkOfOne-website/assets/img/logo-transparent.jpeg";
-const INTRO_VIDEO = "/NetworkOfOne-website/assets/img/intro.mp4";
+/* === asset paths (respect GitHub Pages base path via NEXT_PUBLIC_BASE_PATH) === */
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH || "";
+const LOGO_SRC = `${BASE}/assets/img/logo-white.jpg`;
+const LOGO_TRANSPARENT = `${BASE}/assets/img/logo-transparent.jpeg`;
+const INTRO_VIDEO = `${BASE}/assets/img/intro.mp4`;
 
 /**
  * Networkof.One – XRPL Grant One-Pager
@@ -547,7 +548,7 @@ export default function NetworkOfOneSite() {
             onClick={() => setImageModalOpen(true)}
           >
             <img 
-              src="/NetworkOfOne-website/assets/systemdiagram.png" 
+              src={`${BASE}/assets/systemdiagram.png`} 
               alt="Network of One System Architecture Diagram" 
               className="w-full h-full object-contain bg-white group-hover:scale-105 transition-transform duration-300"
             />
@@ -810,7 +811,7 @@ export default function NetworkOfOneSite() {
         >
           <div className="relative">
             <img 
-              src="/NetworkOfOne-website/assets/systemdiagram.png" 
+              src={`${BASE}/assets/systemdiagram.png`} 
               alt="Network of One System Architecture Diagram - Full View" 
               className="image-modal-content max-w-full max-h-full object-contain"
               onClick={(e) => e.stopPropagation()}
