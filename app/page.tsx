@@ -73,7 +73,7 @@ export default function NetworkOfOneSite() {
   }, []);
 
   return (
-    <div className="min-h-screen w-full bg-[var(--bg-soft)] text-[var(--ink-1)]">
+    <div className="min-h-screen w-full bg-[var(--bg-soft)] text-[var(--ink-1)]" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 88px)' }}>
       {/* Design tokens + animation keyframes */}
       <style>{`
         :root{
@@ -192,6 +192,10 @@ export default function NetworkOfOneSite() {
           border-radius: 12px;
           box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
         }
+
+        /* Floating CTA pop animation */
+        @keyframes popIn { from { opacity: 0; transform: scale(.96); } to { opacity: 1; transform: scale(1); } }
+        .animate-pop { animation: popIn .2s ease-out both; }
         
         /* Video optimizations for mobile */
         video {
@@ -424,6 +428,17 @@ export default function NetworkOfOneSite() {
           </nav>
         )}
       </header>
+
+      {/* Mobile floating CTA (does not overlap header/content) */}
+      {!menuOpen && !showIntro && (
+        <a
+          href="#join"
+          className="sm:hidden fixed left-1/2 -translate-x-1/2 bottom-[calc(env(safe-area-inset-bottom)+16px)] btn btn-primary shadow-[var(--shadow-2)] z-[55] animate-pop"
+        >
+          <span className="spark" aria-hidden></span>
+          Join the network
+        </a>
+      )}
 
       {/* Hero - Mobile optimized */}
       <section id="home" className="bg-gradient-to-b from-white to-[var(--bg-soft)]">
