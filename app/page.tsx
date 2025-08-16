@@ -418,7 +418,7 @@ export default function NetworkOfOneSite() {
                   onClick={() => setMenuOpen(false)}
                   className="btn btn-primary w-full"
                 >
-                 // Join the network
+                 
                 </a>
               </div>
             </div>
