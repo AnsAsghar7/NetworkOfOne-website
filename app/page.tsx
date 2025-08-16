@@ -6,7 +6,6 @@ import React, { useEffect, useState } from "react";
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH || "";
 const LOGO_SRC = `${BASE}/assets/img/logo-white.jpg`;
 const LOGO_TRANSPARENT = `${BASE}/assets/img/logo-transparent.jpeg`;
-const INTRO_VIDEO = `${BASE}/assets/img/intro.mp4`;
 
 /**
  * Networkof.One – XRPL Grant One-Pager
@@ -22,34 +21,11 @@ export default function NetworkOfOneSite() {
   const [scrolled, setScrolled] = useState(false);
   const [imageModalOpen, setImageModalOpen] = useState(false);
 
-  // NEW: intro overlay (auto-fades, respects reduced motion)
-  const [showIntro, setShowIntro] = useState(true);
-  const [introProgress, setIntroProgress] = useState(0);
-  
-  useEffect(() => {
-    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
-    if (reduce) return setShowIntro(false);
-    
-    // Progress tracking
-    const progressInterval = setInterval(() => {
-      setIntroProgress(prev => {
-        const newProgress = prev + (100 / 17); // 17 seconds total
-        return newProgress >= 100 ? 100 : newProgress;
-      });
-    }, 1000);
-    
-    // Auto-hide after 17 seconds
-    const t = setTimeout(() => setShowIntro(false), 17000);
-    
-    return () => {
-      clearTimeout(t);
-      clearInterval(progressInterval);
-    };
-  }, []);
+
 
   // ===== Styles & tokens =====
   const inputClass =
-    "w-full rounded-xl ring-1 ring-slate-200 px-4 py-3 text-base bg-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[var(--aqua)] min-h-[44px]";
+    "w-full rounded-xl ring-1 ring-[var(--card-border)] px-4 py-3 text-base bg-[var(--card-dark)] text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)] min-h-[44px]";
 
   useEffect(() => {
     // Sticky header shadow on scroll
@@ -73,28 +49,31 @@ export default function NetworkOfOneSite() {
   }, []);
 
   return (
-    <div className="min-h-screen w-full bg-[var(--bg-soft)] text-[var(--ink-1)]" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 88px)' }}>
+    <div className="min-h-screen w-full text-[var(--text-primary)]" style={{ background: 'var(--bg-gradient)', paddingBottom: 'calc(env(safe-area-inset-bottom) + 88px)' }}>
       {/* Design tokens + animation keyframes */}
       <style>{`
         :root{
-          --gold:#fcb315;        /* primary CTA, highlights */
-          --magenta:#e221a0;     /* secondary accent */
-          --sky:#059fdb;         /* links/info */
-          --violet:#9420f3;      /* active/focus alt */
-          --red:#fc2d2d;         /* errors */
-          --aqua:#37e7e2;        /* focus/success */
-          --yellow:#fadf6b;      /* warnings */
-          --deep:#0f373e;        /* deep navy for text/bg */
+          --primary:#6366f1;     /* primary brand purple */
+          --primary-dark:#4f46e5; /* darker purple for hover */
+          --accent:#8b5cf6;      /* purple accent */
+          --secondary:#06b6d4;   /* cyan accent */
+          --success:#10b981;     /* green for success */
+          --warning:#f59e0b;     /* amber for warnings */
+          --error:#ef4444;       /* red for errors */
 
-          --bg-soft:#f7f9fb;     /* soft page background */
-          --card:#ffffff;
-          --ink-1:#0a2e2f;       /* primary text */
-          --ink-2:#6b7a7a;       /* muted text */
+          --bg-dark:#0a0a0f;     /* dark background */
+          --bg-gradient: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%);
+          --card-dark:#1a1a2e;   /* dark card background */
+          --card-border:#2a2a3e; /* card border */
+          --text-primary:#ffffff; /* primary text (white) */
+          --text-secondary:#a1a1aa; /* secondary text (gray) */
+          --text-muted:#71717a;   /* muted text */
 
-          --radius-xl:28px;
-          --radius-lg:18px;
-          --shadow-1:0 8px 30px rgba(15,55,62,.08);
-          --shadow-2:0 16px 50px rgba(15,55,62,.12);
+          --radius-xl:24px;
+          --radius-lg:16px;
+          --radius-md:12px;
+          --shadow-dark:0 10px 25px rgba(0,0,0,0.3);
+          --shadow-glow:0 0 30px rgba(99,102,241,0.2);
         }
         html{scroll-behavior:smooth; -webkit-text-size-adjust: 100%;}
         body{-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;}
@@ -116,18 +95,18 @@ export default function NetworkOfOneSite() {
           user-select: none;
         }
         .btn:active{transform:translateY(1px) scale(.98)}
-        .btn-primary{background:var(--gold); color:var(--ink-1); box-shadow:0 6px 16px rgba(252,179,21,.25)}
-        .btn-primary:hover{filter:brightness(.96)}
-        .btn-primary:active{filter:brightness(.94)}
-        .btn-outline{border:1px solid var(--deep); color:var(--deep)}
-        .btn-outline:hover{background:var(--deep); color:#fff}
-        .btn-outline:active{background:var(--deep); color:#fff; opacity:.9}
-        .btn-dark{background:var(--deep); color:#fff}
-        .btn-dark:hover{filter:brightness(.95)}
-        .btn-dark:active{filter:brightness(.9)}
-        .btn-ghost{border:1px solid #d1d5db; background:#fff}
-        .btn-ghost:hover{background:#f8fafc}
-        .btn-ghost:active{background:#f1f5f9}
+        .btn-primary{background:var(--primary); color:var(--text-primary); box-shadow:var(--shadow-glow)}
+        .btn-primary:hover{background:var(--primary-dark)}
+        .btn-primary:active{background:var(--primary-dark); transform:translateY(1px) scale(.98)}
+        .btn-outline{border:1px solid var(--primary); color:var(--primary); background:transparent}
+        .btn-outline:hover{background:var(--primary); color:var(--text-primary)}
+        .btn-outline:active{background:var(--primary-dark); color:var(--text-primary)}
+        .btn-dark{background:var(--card-dark); color:var(--text-primary); border:1px solid var(--card-border)}
+        .btn-dark:hover{background:var(--card-border)}
+        .btn-dark:active{background:var(--card-border); opacity:.9}
+        .btn-ghost{border:1px solid var(--card-border); background:var(--card-dark); color:var(--text-secondary)}
+        .btn-ghost:hover{background:var(--card-border); color:var(--text-primary)}
+        .btn-ghost:active{background:var(--card-border); opacity:.9}
         .btn .spark{position:absolute; inset:0; background:radial-gradient(600px circle at var(--x,50%) var(--y,50%), rgba(255,255,255,.25), transparent 40%); opacity:0; transition:opacity .25s ease; border-radius:inherit}
         .btn:hover .spark{opacity:1}
 
@@ -225,31 +204,7 @@ export default function NetworkOfOneSite() {
           .btn{transition:none}
         }
         
-        /* Intro video styling - Fit to screen */
-        .intro-video {
-          max-height: 75vh;
-          min-height: 320px;
-          width: 90vw;
-          max-width: 90vw;
-          animation: scaleIn 0.5s ease-out;
-          object-fit: contain;
-        }
-        
-        /* Intro overlay adjustments */
-        .intro-overlay {
-          padding: 1rem;
-        }
-        
-        @keyframes scaleIn {
-          0% {
-            opacity: 0;
-            transform: scale(0.9);
-          }
-          100% {
-            opacity: 1;
-            transform: scale(1);
-          }
-        }
+
         
         /* Mobile-specific styles */
         @media (max-width: 640px) {
@@ -317,53 +272,19 @@ export default function NetworkOfOneSite() {
         }
       `}</style>
 
-      {/* NEW: Intro overlay with video - Mobile optimized */}
-      <div
-        className={`fixed inset-0 z-[60] grid place-items-center bg-white/95 backdrop-blur-sm transition-opacity duration-700 ${
-          showIntro ? "opacity-100" : "opacity-0 pointer-events-none"
-        }`}
-        aria-hidden={!showIntro}
-      >
-        <div className="intro-overlay flex flex-col items-center justify-center gap-4 w-full h-full">
-          <video 
-            src={INTRO_VIDEO} 
-            autoPlay 
-            muted 
-            playsInline
-            loop={false}
-            className="intro-video h-auto aspect-video rounded-xl shadow-2xl ring-1 ring-black/10"
-            onEnded={() => setShowIntro(false)}
-          />
-          <div className="w-full max-w-sm mx-auto space-y-3">
-            {/* Progress bar */}
-            <div className="w-full bg-slate-200 rounded-full h-2">
-              <div 
-                className="bg-[var(--gold)] h-2 rounded-full transition-all duration-1000 ease-linear"
-                style={{ width: `${introProgress}%` }}
-              ></div>
-            </div>
-            
-            <button
-              onClick={() => setShowIntro(false)}
-              className="btn btn-ghost text-lg px-6 py-3 w-full"
-            >
-              Skip ({Math.ceil(17 - (introProgress / 100) * 17)}s)
-            </button>
-          </div>
-        </div>
-      </div>
+
 
       {/* Sticky nav */}
-      <header className={`sticky top-0 z-50 border-b border-slate-200/70 bg-[rgba(255,255,255,.7)] backdrop-blur transition-shadow header-content ${
-        scrolled ? "shadow-[var(--shadow-1)]" : "shadow-none"
+      <header className={`sticky top-0 z-50 border-b border-[var(--card-border)] bg-[var(--card-dark)]/80 backdrop-blur transition-shadow header-content ${
+        scrolled ? "shadow-[var(--shadow-dark)]" : "shadow-none"
       }`}>
         <div className="mx-auto max-w-7xl mobile-header px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <a href="#home" className="font-semibold tracking-tight text-xl flex items-center gap-2 mobile-logo">
+          <a href="#home" className="font-semibold tracking-tight text-xl flex items-center gap-2 mobile-logo text-[var(--text-primary)]">
             <img src={LOGO_SRC} alt="Networkof.One" className="h-8 w-auto rounded-md flex-shrink-0" />
             <span className="truncate">Networkof.One</span>
           </a>
 
-          {/* Desktop nav */}
+          {/* Desktop nav with CTA */}
           <nav className="hidden md:flex items-center gap-6 text-sm">
             <NavLink href="#about">About</NavLink>
             <NavLink href="#how">How it works</NavLink>
@@ -373,17 +294,25 @@ export default function NetworkOfOneSite() {
             <NavLink href="#demo">POC Demo</NavLink>
             <NavLink href="#contact">Contact</NavLink>
             <NavLink href="#press">Press</NavLink>
+            <a href="#join" className="btn btn-primary header-cta ml-4">
+              <span className="spark" aria-hidden></span>
+              Join the network
+            </a>
           </nav>
 
-          {/* Mobile toggle only */}
+          {/* Mobile menu button only */}
           <div className="flex items-center mobile-cta-group gap-3">
             <button
               onClick={() => setMenuOpen((v) => !v)}
-              className="md:hidden inline-flex mobile-menu-button h-9 w-9 items-center justify-center rounded-lg ring-1 ring-slate-300 bg-white"
+              className="md:hidden inline-flex mobile-menu-button h-10 w-10 items-center justify-center rounded-lg border border-[var(--card-border)] bg-[var(--card-dark)] text-[var(--text-primary)]"
               aria-label="Toggle menu"
             >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="stroke-[2.5] stroke-slate-700">
-                <path d="M4 6h16M4 12h16M4 18h16" />
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="stroke-[2.5] stroke-current">
+                {menuOpen ? (
+                  <path d="M18 6L6 18M6 6l12 12" />
+                ) : (
+                  <path d="M4 6h16M4 12h16M4 18h16" />
+                )}
               </svg>
             </button>
           </div>
@@ -391,7 +320,7 @@ export default function NetworkOfOneSite() {
 
         {/* Mobile menu - Touch optimized */}
         {menuOpen && (
-          <nav className="md:hidden border-t border-slate-200 bg-white mobile-menu">
+          <nav className="md:hidden border-t border-[var(--card-border)] bg-[var(--card-dark)] mobile-menu">
             <div className="mx-auto max-w-7xl px-4 py-3 grid gap-1 text-base">
               {[
                 ["#about", "About"],
@@ -407,12 +336,12 @@ export default function NetworkOfOneSite() {
                   key={href}
                   href={href}
                   onClick={() => setMenuOpen(false)}
-                  className="mobile-menu-item rounded-lg px-4 py-3 hover:bg-slate-50 active:bg-slate-100 transition-colors"
+                  className="mobile-menu-item rounded-lg px-4 py-3 text-[var(--text-secondary)] hover:bg-[var(--card-border)] hover:text-[var(--text-primary)] active:bg-[var(--card-border)] transition-colors"
                 >
                   {label}
                 </a>
               ))}
-              <div className="pt-3 border-t border-slate-100 mt-2">
+              <div className="pt-3 border-t border-[var(--card-border)] mt-2">
                 <a
                   href="#join"
                   onClick={() => setMenuOpen(false)}
@@ -429,18 +358,18 @@ export default function NetworkOfOneSite() {
       {/* Mobile floating CTA removed per request */}
 
       {/* Hero - Mobile optimized */}
-      <section id="home" className="bg-gradient-to-b from-white to-[var(--bg-soft)]">
-        <div className="mx-auto max-w-7xl mobile-padding px-4 sm:px-6 lg:px-8 py-12 sm:py-20 grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+      <section id="home" className="py-12 sm:py-20">
+        <div className="mx-auto max-w-7xl mobile-padding px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           <div data-reveal className="mobile-text-center lg:text-left">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight leading-tight">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight leading-tight text-[var(--text-primary)]">
               AI powered scheduling and XRPL payments
             </h1>
-            <p className="mt-4 text-[var(--ink-2)] text-base sm:text-lg leading-relaxed">
+            <p className="mt-4 text-[var(--text-secondary)] text-base sm:text-lg leading-relaxed">
               One platform for the three pillars of organized activity: scheduling, payments, communication. Starting in
               sports then expanding to every sector.
             </p>
             <div className="mt-6 flex flex-col sm:flex-row flex-wrap gap-3 items-center justify-center lg:justify-start mobile-gap-4">
-              <a href="#demo" className="btn btn-dark w-full sm:w-auto">
+              <a href="#demo" className="btn btn-primary w-full sm:w-auto">
                 <span className="spark" aria-hidden></span>
                 Watch demo
               </a>
@@ -456,9 +385,9 @@ export default function NetworkOfOneSite() {
 
           {/* Accent device tile with video - Mobile optimized */}
           <div className="relative order-first lg:order-last" data-reveal>
-            <div className="aspect-video w-full rounded-[var(--radius-xl)] bg-[var(--gold)]/90 ring-1 ring-slate-200 shadow-[var(--shadow-2)] p-2 float hero-video">
+            <div className="aspect-video w-full rounded-[var(--radius-xl)] bg-[var(--primary)] ring-1 ring-[var(--card-border)] shadow-[var(--shadow-glow)] p-2 float hero-video">
               <video
-                src={INTRO_VIDEO}
+                src={`${BASE}/assets/gif.mp4`}
                 autoPlay
                 muted
                 playsInline
@@ -543,7 +472,7 @@ export default function NetworkOfOneSite() {
           />
         </div>
 
-        <div className="mt-8 rounded-[var(--radius-xl)] bg-white ring-1 ring-slate-200 p-4 shadow-[var(--shadow-1)]" data-reveal>
+        <div className="mt-8 rounded-[var(--radius-xl)] bg-[var(--card-dark)] ring-1 ring-[var(--card-border)] p-4 shadow-[var(--shadow-dark)]" data-reveal>
           {/* System diagram image */}
           <div 
             className="aspect-[16/9] w-full rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity group relative"
@@ -552,7 +481,7 @@ export default function NetworkOfOneSite() {
             <img 
               src={`${BASE}/assets/systemdiagram.png`} 
               alt="Network of One System Architecture Diagram" 
-              className="w-full h-full object-contain bg-white group-hover:scale-105 transition-transform duration-300"
+              className="w-full h-full object-contain bg-[var(--card-dark)] group-hover:scale-105 transition-transform duration-300"
             />
             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 flex items-center justify-center">
               <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 backdrop-blur-sm rounded-full p-3">
@@ -632,10 +561,10 @@ export default function NetworkOfOneSite() {
       {/* Proof of Concept Demo - Mobile optimized */}
       <Section id="demo" title="Proof of concept - MVP demo" subtitle="See the system in action - video and screenshots">
         <div className="grid lg:grid-cols-2 gap-6 lg:gap-8" data-reveal>
-          <div className="aspect-video w-full overflow-hidden rounded-[var(--radius-xl)] ring-1 ring-slate-200 shadow-[var(--shadow-2)]">
-            {/* Use the intro video for demo section as well */}
+          <div className="aspect-video w-full overflow-hidden rounded-[var(--radius-xl)] ring-1 ring-[var(--card-border)] shadow-[var(--shadow-dark)]">
+            {/* Use the gif video for demo section */}
             <video
-              src={INTRO_VIDEO}
+              src={`${BASE}/assets/gif.mp4`}
               controls
               playsInline
               preload="metadata"
@@ -791,16 +720,16 @@ export default function NetworkOfOneSite() {
       </Section>
 
       {/* Footer */}
-      <footer className="mt-20 border-t border-slate-200 bg-white/60">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 text-sm text-[var(--ink-2)] flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
+      <footer className="mt-20 border-t border-[var(--card-border)] bg-[var(--card-dark)]/60">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 text-sm text-[var(--text-secondary)] flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
           <div className="flex items-center gap-3">
             <img src={LOGO_SRC} alt="Networkof.One" className="h-6 w-auto rounded" />
             <span>© {new Date().getFullYear()} Networkof.One. All rights reserved.</span>
           </div>
           <div className="flex items-center gap-6">
-            <a href="#" className="hover:text-[var(--deep)]">Privacy</a>
-            <a href="#" className="hover:text-[var(--deep)]">Terms</a>
-            <a href="#" className="hover:text-[var(--deep)]">XRPL community</a>
+            <a href="#" className="hover:text-[var(--text-primary)] transition-colors">Privacy</a>
+            <a href="#" className="hover:text-[var(--text-primary)] transition-colors">Terms</a>
+            <a href="#" className="hover:text-[var(--text-primary)] transition-colors">XRPL community</a>
           </div>
         </div>
       </footer>
@@ -839,7 +768,7 @@ export default function NetworkOfOneSite() {
 function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
     <a
-      className="relative px-1 py-1 hover:text-slate-800 after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-[var(--gold)] hover:after:w-full after:transition-[width] after:duration-200"
+      className="relative px-1 py-1 text-[var(--text-secondary)] hover:text-[var(--text-primary)] after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-0 after:bg-[var(--primary)] hover:after:w-full after:transition-[width] after:duration-200"
       href={href}
     >
       {children}
@@ -853,8 +782,8 @@ function Section(props: { id: string; title: string; subtitle?: string; children
     <section id={id} className="scroll-mt-20 py-12 sm:py-16">
       <div className="mx-auto max-w-7xl mobile-padding px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mobile-text-center sm:text-left" data-reveal>
-          <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight">{title}</h2>
-          {subtitle ? <p className="mt-2 text-[var(--ink-2)] text-base sm:text-lg">{subtitle}</p> : null}
+          <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-[var(--text-primary)]">{title}</h2>
+          {subtitle ? <p className="mt-2 text-[var(--text-secondary)] text-base sm:text-lg">{subtitle}</p> : null}
         </div>
         <div className="mt-6 sm:mt-8">{children}</div>
       </div>
@@ -864,16 +793,16 @@ function Section(props: { id: string; title: string; subtitle?: string; children
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-[var(--radius-xl)] bg-white ring-1 ring-slate-200 p-4 text-center shadow-[var(--shadow-1)]" data-reveal>
-      <div className="text-lg font-semibold">{value}</div>
-      <div className="text-xs uppercase tracking-wide text-slate-600 mt-1">{label}</div>
+    <div className="rounded-[var(--radius-xl)] bg-[var(--card-dark)] ring-1 ring-[var(--card-border)] p-4 text-center shadow-[var(--shadow-dark)]" data-reveal>
+      <div className="text-lg font-semibold text-[var(--text-primary)]">{value}</div>
+      <div className="text-xs uppercase tracking-wide text-[var(--text-muted)] mt-1">{label}</div>
     </div>
   );
 }
 
 function Pill({ children }: { children: React.ReactNode }) {
   return (
-    <span className="inline-flex items-center rounded-full bg-white ring-1 ring-slate-200 px-3 py-1 text-xs text-slate-700 shadow" data-reveal>
+    <span className="inline-flex items-center rounded-full bg-[var(--card-dark)] ring-1 ring-[var(--card-border)] px-3 py-1 text-xs text-[var(--text-secondary)] shadow-[var(--shadow-dark)]" data-reveal>
       {children}
     </span>
   );
@@ -881,18 +810,18 @@ function Pill({ children }: { children: React.ReactNode }) {
 
 function Step({ title, text }: { title: string; text: string }) {
   return (
-    <li className="rounded-[var(--radius-xl)] ring-1 ring-slate-200 p-4 bg-white shadow-[var(--shadow-1)] hover:-translate-y-[2px] hover:shadow-[var(--shadow-2)] transition" data-reveal>
-      <div className="font-medium">{title}</div>
-      <div className="text-sm text-[var(--ink-2)] mt-1">{text}</div>
+    <li className="rounded-[var(--radius-xl)] ring-1 ring-[var(--card-border)] p-4 bg-[var(--card-dark)] shadow-[var(--shadow-dark)] hover:-translate-y-[2px] hover:shadow-[var(--shadow-glow)] transition" data-reveal>
+      <div className="font-medium text-[var(--text-primary)]">{title}</div>
+      <div className="text-sm text-[var(--text-secondary)] mt-1">{text}</div>
     </li>
   );
 }
 
 function Card({ title, items }: { title: string; items: string[] }) {
   return (
-    <div className="rounded-[var(--radius-xl)] ring-1 ring-slate-200 p-5 bg-white shadow-[var(--shadow-1)] hover:shadow-[var(--shadow-2)] hover:-translate-y-[2px] transition" data-reveal>
-      <h3 className="font-medium mb-3">{title}</h3>
-      <ul className="space-y-2 text-sm text-[var(--ink-2)] list-disc pl-5">
+    <div className="rounded-[var(--radius-xl)] ring-1 ring-[var(--card-border)] p-5 bg-[var(--card-dark)] shadow-[var(--shadow-dark)] hover:shadow-[var(--shadow-glow)] hover:-translate-y-[2px] transition" data-reveal>
+      <h3 className="font-medium mb-3 text-[var(--text-primary)]">{title}</h3>
+      <ul className="space-y-2 text-sm text-[var(--text-secondary)] list-disc pl-5">
         {items.map((it, i) => (
           <li key={i}>{it}</li>
         ))}
@@ -903,9 +832,9 @@ function Card({ title, items }: { title: string; items: string[] }) {
 
 function RoadmapCard({ phase, bullets }: { phase: string; bullets: string[] }) {
   return (
-    <div className="rounded-[var(--radius-xl)] ring-1 ring-slate-200 p-5 bg-white shadow-[var(--shadow-1)]" data-reveal>
-      <div className="text-xs uppercase tracking-wide text-slate-600">{phase}</div>
-      <ul className="mt-3 space-y-2 text-sm list-disc pl-5 text-[var(--ink-2)]">
+    <div className="rounded-[var(--radius-xl)] ring-1 ring-[var(--card-border)] p-5 bg-[var(--card-dark)] shadow-[var(--shadow-dark)]" data-reveal>
+      <div className="text-xs uppercase tracking-wide text-[var(--text-muted)]">{phase}</div>
+      <ul className="mt-3 space-y-2 text-sm list-disc pl-5 text-[var(--text-secondary)]">
         {bullets.map((b, i) => (
           <li key={i}>{b}</li>
         ))}
@@ -916,13 +845,13 @@ function RoadmapCard({ phase, bullets }: { phase: string; bullets: string[] }) {
 
 function FounderCard({ name, role }: { name: string; role: string }) {
   return (
-    <div className="rounded-[var(--radius-xl)] ring-1 ring-slate-200 p-5 bg-white flex items-center gap-4 shadow-[var(--shadow-1)] hover:shadow-[var(--shadow-2)] transition" data-reveal>
-      <div className="h-12 w-12 rounded-full bg-[var(--bg-soft)] flex items-center justify-center text-slate-600 text-sm ring-1 ring-slate-200">
+    <div className="rounded-[var(--radius-xl)] ring-1 ring-[var(--card-border)] p-5 bg-[var(--card-dark)] flex items-center gap-4 shadow-[var(--shadow-dark)] hover:shadow-[var(--shadow-glow)] transition" data-reveal>
+      <div className="h-12 w-12 rounded-full bg-[var(--primary)] flex items-center justify-center text-[var(--text-primary)] text-sm font-medium">
         {name.split(" ").map((n) => n[0]).join("")}
       </div>
       <div>
-        <div className="font-medium">{name}</div>
-        <div className="text-sm text-[var(--ink-2)]">{role}</div>
+        <div className="font-medium text-[var(--text-primary)]">{name}</div>
+        <div className="text-sm text-[var(--text-secondary)]">{role}</div>
       </div>
     </div>
   );
